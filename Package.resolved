@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "matrixLib",
+        "repositoryURL": "https://github.com/shlegg4/matrixLib",
+        "state": {
+          "branch": "main",
+          "revision": "cc95a4eaab380407ed8d0acfc0d5c049560cd8b1",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
