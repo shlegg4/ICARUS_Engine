@@ -44,9 +44,9 @@ extension Tri : Equatable{
 @available(macOS 10.15, *)
 public class Box : OBJS_3D{
         
-    var height : Float
-    var depth : Float
-    var width : Float
+    public var height : Float
+    public var depth : Float
+    public var width : Float
         
         /// Box initialiser
         /// - Parameters:
@@ -56,7 +56,7 @@ public class Box : OBJS_3D{
         ///   - width: Width of the box
         ///   - height: Height of the box
         ///   - depth: Depth of the box
-        init(x : Float, y : Float, z : Float, width : Float, height : Float, depth : Float){
+        public init(x : Float, y : Float, z : Float, width : Float, height : Float, depth : Float){
             
             self.depth = depth // Z axis
             self.height = height // Y axis
