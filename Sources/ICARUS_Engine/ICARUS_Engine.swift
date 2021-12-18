@@ -99,7 +99,7 @@ public class Box : OBJS_3D{
             let hz = dz
             
             self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: ex, posVec2Y: ey, posVec2Z: ez, posVec3X: fx, posVec3Y: fy, posVec3Z: fz))
-//            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: bx, posVec2Y: by, posVec2Z: bz, posVec3X: fx, posVec3Y: fy, posVec3Z: fz))
+            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: bx, posVec2Y: by, posVec2Z: bz, posVec3X: fx, posVec3Y: fy, posVec3Z: fz))
 //            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: bx, posVec1Y: by, posVec1Z: bz, posVec2X: fx, posVec2Y: fy, posVec2Z: fz, posVec3X: gx, posVec3Y: gy, posVec3Z: gz))
 //            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: bx, posVec1Y: by, posVec1Z: bz, posVec2X: cx, posVec2Y: cy, posVec2Z: cz, posVec3X: gx, posVec3Y: gy, posVec3Z: gz))
 //            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: cx, posVec1Y: cy, posVec1Z: cz, posVec2X: gx, posVec2Y: gy, posVec2Z: gz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
