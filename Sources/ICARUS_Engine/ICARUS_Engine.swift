@@ -414,17 +414,25 @@ public struct ICARUS {
             
             let computeEncoder : MTLComputeCommandEncoder? = commandBuffer?.makeComputeCommandEncoder()
             assert(computeEncoder != nil, " Compute encoder = nil")
-            self.encodeAddscalarCommands(computeEncoder: computeEncoder!, bufferA: self.bufferx, Sca: &self.Xtranslate, bufferRes: self.bufferx)
-            self.encodeAddscalarCommands(computeEncoder: computeEncoder!, bufferA: self.buffery, Sca: &self.Ytranslate, bufferRes: self.buffery)
-            self.encodeAddscalarCommands(computeEncoder: computeEncoder!, bufferA: self.bufferz, Sca: &self.Ztranslate, bufferRes: self.bufferz)
+            
             
             self.encodeScalarCommands(computeEncoder: computeEncoder!,buffer: self.bufferx,Sca: &self.scaX1,bufferRes: self.bufferXres)
             self.encodeScalarCommands(computeEncoder: computeEncoder!,buffer: self.buffery,Sca: &self.scaY1,bufferRes: self.bufferYres)
             self.encodeScalarCommands(computeEncoder: computeEncoder!,buffer: self.bufferz,Sca: &self.scaZ1,bufferRes: self.bufferZres)
+            
+            self.encodeAddscalarCommands(computeEncoder: computeEncoder!, bufferA: self.bufferx, Sca: &self.Xtranslate, bufferRes: self.bufferx)
+            self.encodeAddscalarCommands(computeEncoder: computeEncoder!, bufferA: self.buffery, Sca: &self.Ytranslate, bufferRes: self.buffery)
+            self.encodeAddscalarCommands(computeEncoder: computeEncoder!, bufferA: self.bufferz, Sca: &self.Ztranslate, bufferRes: self.bufferz)
+            
             self.encodeAddcommands(computeEncoder: computeEncoder!, bufferA: self.bufferXres, bufferB: self.bufferYres, bufferC: self.bufferZres, bufferRes: self.bufferXRes)
             self.encodeScalarCommands(computeEncoder: computeEncoder!,buffer: self.bufferx,Sca: &self.scaX2,bufferRes: self.bufferXres)
             self.encodeScalarCommands(computeEncoder: computeEncoder!,buffer: self.buffery,Sca: &self.scaY2,bufferRes: self.bufferYres)
             self.encodeScalarCommands(computeEncoder: computeEncoder!,buffer: self.bufferz,Sca: &self.scaZ2,bufferRes: self.bufferZres)
+            
+            self.encodeAddscalarCommands(computeEncoder: computeEncoder!, bufferA: self.bufferx, Sca: &self.Xtranslate, bufferRes: self.bufferx)
+            self.encodeAddscalarCommands(computeEncoder: computeEncoder!, bufferA: self.buffery, Sca: &self.Ytranslate, bufferRes: self.buffery)
+            self.encodeAddscalarCommands(computeEncoder: computeEncoder!, bufferA: self.bufferz, Sca: &self.Ztranslate, bufferRes: self.bufferz)
+            
             self.encodeAddcommands(computeEncoder: computeEncoder!, bufferA: self.bufferXres, bufferB: self.bufferYres, bufferC: self.bufferZres, bufferRes: self.bufferYRes)
             computeEncoder?.endEncoding()
             commandBuffer?.commit()
