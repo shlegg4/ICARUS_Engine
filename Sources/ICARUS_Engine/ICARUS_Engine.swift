@@ -281,7 +281,7 @@ public struct ICARUS {
         
         init (device : MTLDevice){
             self.device = device
-            let defaultLibrary : MTLLibrary! = self.device.makeDefaultLibrary()
+            let defaultLibrary : MTLLibrary! = try? self.device.makeDefaultLibrary(bundle: Bundle.module)
             let addFunction : MTLFunction! = defaultLibrary.makeFunction(name: "add_arrays")
             let scalarMultiplyFunction : MTLFunction! = defaultLibrary.makeFunction(name: "multiply_array_by_scalar")
             self.addFunctionPSO = try! self.device.makeComputePipelineState(function: addFunction)
