@@ -174,6 +174,11 @@ public struct ICARUS {
     public var yaw : Float = 0
     public var Zoom : Float = 1
     
+    public var xTranslate : Float = 0
+    public var yTranslate : Float = 0
+    public var zTranslate : Float = 0
+    
+    
     public var projection : Projection
     public var objList : [OBJS_3D] = []
     
@@ -211,7 +216,7 @@ public struct ICARUS {
         
         let device = MTLCreateSystemDefaultDevice()
         let projector = MetalProjector(device: device!)
-        projector.FillBuffers(arrX: xPoints, arrY: yPoints, arrZ: zPoints, scaX1: projectionMatrix[0,0], scaY1: projectionMatrix[0,1], scaZ1: projectionMatrix[0,2], scaX2: projectionMatrix[1,0], scaY2: projectionMatrix[1,1], scaZ2: projectionMatrix[1,2])
+        projector.FillBuffers(arrX: xPoints, arrY: yPoints, arrZ: zPoints, scaX1: projectionMatrix[0,0], scaY1: projectionMatrix[0,1], scaZ1: projectionMatrix[0,2], scaX2: projectionMatrix[1,0], scaY2: projectionMatrix[1,1], scaZ2: projectionMatrix[1,2], Xtranslate: self.xTranslate, Ytranslate:  self.yTranslate, Ztranslate: self.zTranslate)
         projector.SendComputeCommand()
         projector.ReturnXYList(tri: tris)
         
@@ -251,7 +256,12 @@ public struct ICARUS {
         var device : MTLDevice!
         var addFunctionPSO : MTLComputePipelineState!
         var scalarMultiplyFunctionPSO : MTLComputePipelineState!
+        var addScalarFunctionPSO : MTLComputePipelineState!
         var commandQueue : MTLCommandQueue!
+        
+        
+        
+        
         
     //    vector input buffers
         var bufferx : MTLBuffer!
@@ -262,6 +272,11 @@ public struct ICARUS {
         var bufferXres : MTLBuffer!
         var bufferYres : MTLBuffer!
         var bufferZres : MTLBuffer!
+        
+        var Xtranslate : Float = 0
+        var Ytranslate : Float = 0
+        var Ztranslate : Float  = 0
+        
         var scaX1 : Float = 0
         var scaY1 : Float = 0
         var scaZ1 : Float = 0
@@ -284,12 +299,14 @@ public struct ICARUS {
             let defaultLibrary : MTLLibrary! = try? self.device.makeDefaultLibrary(bundle: Bundle.module)
             let addFunction : MTLFunction! = defaultLibrary.makeFunction(name: "add_arrays")
             let scalarMultiplyFunction : MTLFunction! = defaultLibrary.makeFunction(name: "multiply_array_by_scalar")
+            let addScalarFunction : MTLFunction! = defaultLibrary.makeFunction(name: "addArray_by_scalar")
+            self.addScalarFunctionPSO = try! self.device.makeComputePipelineState(function: addScalarFunction)
             self.addFunctionPSO = try! self.device.makeComputePipelineState(function: addFunction)
             self.scalarMultiplyFunctionPSO = try! self.device.makeComputePipelineState(function: scalarMultiplyFunction)
             self.commandQueue = self.device.makeCommandQueue()
             
         }
-        func FillBuffers(arrX : [Float], arrY : [Float], arrZ : [Float], scaX1 : Float , scaY1 : Float , scaZ1 : Float,scaX2 : Float , scaY2 : Float , scaZ2 : Float){
+        func FillBuffers(arrX : [Float], arrY : [Float], arrZ : [Float], scaX1 : Float , scaY1 : Float , scaZ1 : Float,scaX2 : Float , scaY2 : Float , scaZ2 : Float,Xtranslate : Float,Ytranslate : Float, Ztranslate : Float){
             self.arrayLength = arrX.count
             let BufferSize = arrX.count * MemoryLayout<Float>.size
             
@@ -308,7 +325,10 @@ public struct ICARUS {
             self.scaX2 = scaX2
             self.scaY2 = scaY2
             self.scaZ2 = scaZ2
-
+            
+            self.Xtranslate = Xtranslate
+            self.Ytranslate = Ytranslate
+            self.Ztranslate = Ztranslate
 
             
             
@@ -364,7 +384,25 @@ public struct ICARUS {
                    let threadGroupSize : MTLSize = MTLSizeMake(threadGroupSizeInt, 1, 1)
            
                    computeEncoder.dispatchThreads(gridSize, threadsPerThreadgroup: threadGroupSize)
+        }
+        
+        func encodeAddscalarCommands(computeEncoder : MTLComputeCommandEncoder,bufferA : MTLBuffer, Sca : inout Float, bufferRes : MTLBuffer?){
+            computeEncoder.setComputePipelineState(self.addScalarFunctionPSO)
+            computeEncoder.setBuffer(bufferA,offset: 0,index: 0)
+            computeEncoder.setBytes(&Sca, length: MemoryLayout<Float>.size, index: 1)
+            computeEncoder.setBuffer(bufferRes, offset: 0, index: 2)
             
+            let gridSize : MTLSize = MTLSizeMake(arrayLength, 1, 1)
+            
+            var threadGroupSizeInt : Int = self.addScalarFunctionPSO.maxTotalThreadsPerThreadgroup
+            
+            if(threadGroupSizeInt > arrayLength){
+                threadGroupSizeInt = arrayLength
+            }
+            
+            let threadGroupSize : MTLSize = MTLSizeMake(threadGroupSizeInt, 1, 1)
+            
+            computeEncoder.dispatchThreads(gridSize, threadsPerThreadgroup: threadGroupSize)
             
         }
         
@@ -376,6 +414,9 @@ public struct ICARUS {
             
             let computeEncoder : MTLComputeCommandEncoder? = commandBuffer?.makeComputeCommandEncoder()
             assert(computeEncoder != nil, " Compute encoder = nil")
+            self.encodeAddscalarCommands(computeEncoder: computeEncoder!, bufferA: self.bufferx, Sca: &self.Xtranslate, bufferRes: self.bufferx)
+            self.encodeAddscalarCommands(computeEncoder: computeEncoder!, bufferA: self.buffery, Sca: &self.Ytranslate, bufferRes: self.buffery)
+            self.encodeAddscalarCommands(computeEncoder: computeEncoder!, bufferA: self.bufferz, Sca: &self.Ztranslate, bufferRes: self.bufferz)
             
             self.encodeScalarCommands(computeEncoder: computeEncoder!,buffer: self.bufferx,Sca: &self.scaX1,bufferRes: self.bufferXres)
             self.encodeScalarCommands(computeEncoder: computeEncoder!,buffer: self.buffery,Sca: &self.scaY1,bufferRes: self.bufferYres)

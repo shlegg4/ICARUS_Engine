@@ -19,6 +19,14 @@ kernel void add_arrays(device const float* inA,
     result[index] = inA[index] + inB[index] + inC[index];
 }
 
+kernel void addArray_by_scalar(device const float* inA,
+                               device const float* scaA,
+                               device const float* result,
+                               uint index [[thread_position_in_grid]])
+{
+    result[index] = inA[index] + scaA[0]
+}
+
 kernel void multiply_array_by_scalar(device const float* inA,
                                      device const float* inB,
                                      device float* result,
