@@ -22,7 +22,7 @@ let package = Package(
         .target(
             name: "ICARUS_Engine",
             dependencies: ["matrixLib"],
-            resources: [.process("MetalFunctions")]),
+            resources: [.process("MetalFunctions.metal")]),
         .testTarget(
             name: "ICARUS_EngineTests",
             dependencies: ["ICARUS_Engine"]),
