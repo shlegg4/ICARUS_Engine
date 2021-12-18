@@ -66,34 +66,50 @@ public class Box : OBJS_3D{
             
             
 //            Create all faces associated with the sides of a box
-            for i in 0 ..< 5{
-                let w = self.width*Float(min(1, max(0, i)))
-                let d = self.depth*Float(min(1, max(0, i-1)))
-                
-                let w2 = self.width*Float(min(1, max(0, i+1)))
-                let d2 = self.depth*Float(min(1, max(0, i)))
-                
-               
-                    self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: self.Xpos + w , posVec1Y: self.Ypos, posVec1Z: self.Zpos + d, posVec2X: self.Xpos + w2, posVec2Y: self.Ypos, posVec2Z: self.Zpos + d2, posVec3X: self.Xpos + w2, posVec3Y: self.Ypos + self.height, posVec3Z: self.Zpos + d2))
-               
-              
-                    self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: self.Xpos + w , posVec1Y: self.Ypos, posVec1Z: self.Zpos + d, posVec2X: self.Xpos + w, posVec2Y: self.Ypos + self.height, posVec2Z: self.Zpos + d2, posVec3X: self.Xpos + w2, posVec3Y: self.Ypos + self.height, posVec3Z: self.Zpos + d2))
-                
-            }
+            let ax = self.Xpos
+            let ay = self.Ypos
+            let az = self.Zpos
             
-          
-                self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: self.Xpos, posVec1Y: self.Ypos, posVec1Z: self.Zpos, posVec2X: self.Xpos + self.width, posVec2Y: self.Ypos, posVec2Z: self.Zpos, posVec3X: self.Xpos + self.width, posVec3Y: self.Ypos, posVec3Z: self.Zpos + self.depth))
+            let bx = self.Xpos + self.width
+            let by = self.Ypos
+            let bz = self.Zpos
             
-           
-                self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: self.Xpos, posVec1Y: self.Ypos, posVec1Z: self.Zpos, posVec2X: self.Xpos, posVec2Y: self.Ypos, posVec2Z: self.Zpos + self.depth, posVec3X: self.Xpos + self.width, posVec3Y: self.Ypos, posVec3Z: self.Zpos + self.depth))
+            let cx = self.Xpos + self.width
+            let cy = self.Ypos
+            let cz = self.Zpos + self.depth
             
+            let dx = self.Xpos
+            let dy = self.Ypos
+            let dz = self.Zpos + self.depth
             
-                self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: self.Xpos, posVec1Y: self.Ypos + self.height, posVec1Z: self.Zpos, posVec2X: self.Xpos + self.width, posVec2Y: self.Ypos + self.height, posVec2Z: self.Zpos, posVec3X: self.Xpos + self.width, posVec3Y: self.Ypos + self.height, posVec3Z: self.Zpos + self.depth))
-           
-          
-                self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: self.Xpos, posVec1Y: self.Ypos + self.height, posVec1Z: self.Zpos, posVec2X: self.Xpos, posVec2Y: self.Ypos + self.height, posVec2Z: self.Zpos + self.depth, posVec3X: self.Xpos + self.width, posVec3Y: self.Ypos + self.height , posVec3Z: self.Zpos + self.depth))
-          
+            let ex = ax
+            let ey = ay + self.height
+            let ez = az
             
+            let fx = bx
+            let fy = by + self.height
+            let fz = bz
+            
+            let gx = cx
+            let gy = cy + self.height
+            let gz = cz
+            
+            let hx = dx
+            let hy = dy + self.height
+            let hz = dz
+            
+            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: ex, posVec2Y: ey, posVec2Z: ez, posVec3X: fx, posVec3Y: fy, posVec3Z: fz))
+            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: bx, posVec2Y: by, posVec2Z: bz, posVec3X: fx, posVec3Y: fy, posVec3Z: fz))
+            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: bx, posVec1Y: by, posVec1Z: bz, posVec2X: fx, posVec2Y: fy, posVec2Z: fz, posVec3X: gx, posVec3Y: gy, posVec3Z: gz))
+            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: bx, posVec1Y: by, posVec1Z: bz, posVec2X: cx, posVec2Y: cy, posVec2Z: cz, posVec3X: gx, posVec3Y: gy, posVec3Z: gz))
+            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: cx, posVec1Y: cy, posVec1Z: cz, posVec2X: gx, posVec2Y: gy, posVec2Z: gz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
+            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: cx, posVec1Y: cy, posVec1Z: cz, posVec2X: dx, posVec2Y: dy, posVec2Z: dz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
+            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: dx, posVec1Y: dy, posVec1Z: dz, posVec2X: hx, posVec2Y: hy, posVec2Z: hz, posVec3X: ex, posVec3Y: ey, posVec3Z: ez))
+            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: dx, posVec1Y: dy, posVec1Z: dz, posVec2X: ax, posVec2Y: ay, posVec2Z: az, posVec3X: ex, posVec3Y: ey, posVec3Z: ez))
+            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: bx, posVec2Y: by, posVec2Z: bz, posVec3X: dx, posVec3Y: dy, posVec3Z: dz))
+            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: bx, posVec1Y: by, posVec1Z: bz, posVec2X: cx, posVec2Y: cy, posVec2Z: cz, posVec3X: dx, posVec3Y: dy, posVec3Z: dz))
+            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: ex, posVec1Y: ey, posVec1Z: ez, posVec2X: fx, posVec2Y: fy, posVec2Z: fz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
+            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: fx, posVec1Y: fy, posVec1Z: fz, posVec2X: gx, posVec2Y: gy, posVec2Z: gz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
         }
         
     }
