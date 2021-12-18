@@ -66,7 +66,7 @@ public class Box : OBJS_3D{
             
             
 //            Create all faces associated with the sides of a box
-            for i in 0 ..< 4{
+            for i in 0 ..< 5{
                 let w = self.width*Float(min(1, max(0, i)))
                 let d = self.depth*Float(min(1, max(0, i-1)))
                 
