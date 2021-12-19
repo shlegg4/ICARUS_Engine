@@ -160,11 +160,12 @@ public class OBJS_3D : Identifiable {
                 temp.addLine(to: CGPoint(x: Int(tri.posVec2.point.x), y: Int(tri.posVec2.point.y)))
                 temp.addLine(to: CGPoint(x: Int(tri.posVec3.point.x), y: Int(tri.posVec3.point.y)))
                 temp.addLine(to: CGPoint(x: Int(tri.posVec1.point.x), y: Int(tri.posVec1.point.y)))
+                
                 path.addPath(temp)
             }
         }
         
-        return path
+        return path.stroke(.black, lineWidth: 0.25) as! Path
     }
     
 //    Possible functions Append to this list : Colour Faces,
