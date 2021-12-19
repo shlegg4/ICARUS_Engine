@@ -131,7 +131,7 @@ public class Box : OBJS_3D{
         let vecABz = bz - az
         let vecCBx = bx - cx
         let vecCBy = by - cy
-        let vecCBz = by - cz
+        let vecCBz = bz - cz
         
         let normX = vecABy*vecCBz - vecABz*vecCBy
         let normY = vecABz*vecCBx - vecABx*vecCBz
