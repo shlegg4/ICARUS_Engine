@@ -22,14 +22,24 @@ public struct Tri{
         var thickness : Float
     @available(macOS 10.15, *)
     
-        init(normX : Float, normY : Float, normZ : Float, posVec1X : Float, posVec1Y : Float, posVec1Z : Float, posVec2X : Float, posVec2Y : Float, posVec2Z : Float, posVec3X : Float, posVec3Y : Float, posVec3Z : Float,color : Color = .white,thickness : Float = 0.25){
-            self.norm = vector(x: normX,y: normY,z: normZ)
-            self.posVec1 = vector(x: posVec1X,y: posVec1Y,z: posVec1Z)
-            self.posVec2 = vector(x: posVec2X,y: posVec2Y,z: posVec2Z)
-            self.posVec3 = vector(x: posVec3X,y: posVec3Y,z: posVec3Z)
+    init(posVec1 : vector , posVec2 : vector, posVec3 : vector,color : Color = .white,thickness : Float = 0.25){
+            
+            self.posVec1 = posVec1
+            self.posVec2 = posVec2
+            self.posVec3 = posVec3
+            self.norm = vector(x: 0, y: 0, z: 0)
             self.color = color
             self.thickness = thickness
+        self.norm = crossProd(vecA: self.posVec1, vecB: self.posVec2, vecC: self.posVec3)
+            
         }
+    
+    func crossProd(vecA : vector,vecB : vector,vecC : vector) -> vector{
+        let A = vector(x: vecA.x-vecB.x, y: vecA.y-vecB.y, z: vecA.z-vecB.z)
+        let B = vector(x: vecC.x-vecB.x, y: vecC.y-vecB.y, z: vecC.z-vecB.z)
+        let vecNorm = vector(x: A.y*B.z - A.z*B.y , y: A.z*B.x - A.x*B.z, z: A.x*B.y - A.y*B.x)
+        return vecNorm
+    }
     }
 @available(macOS 10.15, *)
 extension Tri : Equatable{
@@ -67,92 +77,44 @@ public class Box : OBJS_3D{
             
             
 //            Create all faces associated with the sides of a box
-            let ax = self.Xpos
-            let ay = self.Ypos
-            let az = self.Zpos
+            let A = vector(x: self.Xpos, y: self.Ypos, z: self.Zpos)
+            let B = vector(x: self.Xpos + self.width, y: self.Ypos, z: self.Zpos)
+            let C = vector(x: self.Xpos + self.width, y: self.Ypos, z: self.Zpos + self.depth)
+            let D = vector(x: self.Xpos, y: self.Ypos, z: self.Zpos + self.depth)
+            let E = vector(x: A.x, y: A.y + self.height, z: A.z)
+            let F = vector(x: B.x, y: B.y + self.height, z: B.z)
+            let G = vector(x: C.x, y: C.y + self.height, z: C.z)
+            let H = vector(x: D.x, y: D.y + self.height, z: D.z)
             
-            let bx = self.Xpos + self.width
-            let by = self.Ypos
-            let bz = self.Zpos
-            
-            let cx = self.Xpos + self.width
-            let cy = self.Ypos
-            let cz = self.Zpos + self.depth
-            
-            let dx = self.Xpos
-            let dy = self.Ypos
-            let dz = self.Zpos + self.depth
-            
-            let ex = ax
-            let ey = ay + self.height
-            let ez = az
-            
-            let fx = bx
-            let fy = by + self.height
-            let fz = bz
-            
-            let gx = cx
-            let gy = cy + self.height
-            let gz = cz
-            
-            let hx = dx
-            let hy = dy + self.height
-            let hz = dz
-            
-            let AEFnorm = crossProd(ax: ax, ay: ay, az: az, bx: ex, by: ey, bz: ez, cx: fx, cy: fy, cz: fz)
-            let ABFnorm = crossProd(ax: ax, ay: ay, az: az, bx: bx, by: by, bz: bz, cx: fx, cy: fy, cz: fz)
-            let BFGnorm = crossProd(ax: bx, ay: by, az: bz, bx: fx, by: fy, bz: fz, cx: gx, cy: gy, cz: gz)
-            let BCGnorm = crossProd(ax: bx, ay: by, az: bz, bx: cx, by: cy, bz: cz, cx: gx, cy: gy, cz: gz)
-            let CGHnorm = crossProd(ax: cx, ay: cy, az: cz, bx: gx, by: gy, bz: gz, cx: hx, cy: hy, cz: hz)
-            let CDHnorm = crossProd(ax: cx, ay: cy, az: cz, bx: dx, by: dy, bz: dz, cx: hx, cy: hy, cz: hz)
-            let DHEnorm = crossProd(ax: dx, ay: dy, az: dz, bx: hx, by: hy, bz: hz, cx: ex, cy: ey, cz: ez)
-            let DAEnorm = crossProd(ax: dx, ay: dy, az: dz, bx: ax, by: ay, bz: az, cx: ex, cy: ey, cz: ez)
-            let ABDnorm = crossProd(ax: bx, ay: by, az: bz, bx: ax, by: ay, bz: az, cx: dx, cy: dy, cz: dz)
-            let BCDnorm = crossProd(ax: bx, ay: by, az: bz, bx: cx, by: cy, bz: cz, cx: dx, cy: dy, cz: dz)
-            let EFHnorm = crossProd(ax: fx, ay: fy, az: fz, bx: ex, by: ey, bz: ez, cx: hx, cy: hy, cz: hz)
-            let FGHnorm = crossProd(ax: fx, ay: fy, az: fz, bx: gx, by: gy, bz: gz, cx: hx, cy: hy, cz: hz)
-            
-            self.Faces.append(Tri(normX: AEFnorm.x, normY: AEFnorm.y, normZ: AEFnorm.z, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: ex, posVec2Y: ey, posVec2Z: ez, posVec3X: fx, posVec3Y: fy, posVec3Z: fz))
-            self.Faces.append(Tri(normX: ABFnorm.x, normY: ABFnorm.y, normZ: ABFnorm.z, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: bx, posVec2Y: by, posVec2Z: bz, posVec3X: fx, posVec3Y: fy, posVec3Z: fz))
-            self.Faces.append(Tri(normX: BFGnorm.x, normY: BFGnorm.y, normZ: BFGnorm.z, posVec1X: bx, posVec1Y: by, posVec1Z: bz, posVec2X: fx, posVec2Y: fy, posVec2Z: fz, posVec3X: gx, posVec3Y: gy, posVec3Z: gz))
-            self.Faces.append(Tri(normX: BCGnorm.x, normY: BCGnorm.y, normZ: BCGnorm.z, posVec1X: bx, posVec1Y: by, posVec1Z: bz, posVec2X: cx, posVec2Y: cy, posVec2Z: cz, posVec3X: gx, posVec3Y: gy, posVec3Z: gz))
-            self.Faces.append(Tri(normX: CGHnorm.x, normY: CGHnorm.y, normZ: CGHnorm.z, posVec1X: cx, posVec1Y: cy, posVec1Z: cz, posVec2X: gx, posVec2Y: gy, posVec2Z: gz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
-            self.Faces.append(Tri(normX: CDHnorm.x, normY: CDHnorm.y, normZ: CDHnorm.z, posVec1X: cx, posVec1Y: cy, posVec1Z: cz, posVec2X: dx, posVec2Y: dy, posVec2Z: dz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
-            self.Faces.append(Tri(normX: DHEnorm.x, normY: DHEnorm.y, normZ: DHEnorm.z, posVec1X: dx, posVec1Y: dy, posVec1Z: dz, posVec2X: hx, posVec2Y: hy, posVec2Z: hz, posVec3X: ex, posVec3Y: ey, posVec3Z: ez))
-            self.Faces.append(Tri(normX: DAEnorm.x, normY: DAEnorm.y, normZ: DAEnorm.z, posVec1X: dx, posVec1Y: dy, posVec1Z: dz, posVec2X: ax, posVec2Y: ay, posVec2Z: az, posVec3X: ex, posVec3Y: ey, posVec3Z: ez))
-            self.Faces.append(Tri(normX: ABDnorm.x, normY: ABDnorm.y, normZ: ABDnorm.z, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: bx, posVec2Y: by, posVec2Z: bz, posVec3X: dx, posVec3Y: dy, posVec3Z: dz))
-            self.Faces.append(Tri(normX: BCDnorm.x, normY: BCDnorm.y, normZ: BCDnorm.z, posVec1X: bx, posVec1Y: by, posVec1Z: bz, posVec2X: cx, posVec2Y: cy, posVec2Z: cz, posVec3X: dx, posVec3Y: dy, posVec3Z: dz))
-            self.Faces.append(Tri(normX: EFHnorm.x, normY: EFHnorm.y, normZ: EFHnorm.z, posVec1X: ex, posVec1Y: ey, posVec1Z: ez, posVec2X: fx, posVec2Y: fy, posVec2Z: fz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
-            self.Faces.append(Tri(normX: FGHnorm.x, normY: FGHnorm.y, normZ: FGHnorm.z, posVec1X: fx, posVec1Y: fy, posVec1Z: fz, posVec2X: gx, posVec2Y: gy, posVec2Z: gz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
+            self.Faces.append(Tri(posVec1: A, posVec2: E, posVec3: F))
+            self.Faces.append(Tri(posVec1: A, posVec2: B, posVec3: F))
+            self.Faces.append(Tri(posVec1: B, posVec2: F, posVec3: G))
+            self.Faces.append(Tri(posVec1: B, posVec2: C, posVec3: G))
+            self.Faces.append(Tri(posVec1: C, posVec2: G, posVec3: H))
+            self.Faces.append(Tri(posVec1: C, posVec2: D, posVec3: H))
+            self.Faces.append(Tri(posVec1: D, posVec2: H, posVec3: E))
+            self.Faces.append(Tri(posVec1: D, posVec2: A, posVec3: E))
+            self.Faces.append(Tri(posVec1: B, posVec2: A, posVec3: D))
+            self.Faces.append(Tri(posVec1: B, posVec2: C, posVec3: D))
+            self.Faces.append(Tri(posVec1: F, posVec2: E, posVec3: H))
+            self.Faces.append(Tri(posVec1: F, posVec2: G, posVec3: H))
         }
-    func crossProd(ax:Float,ay:Float,az:Float,bx:Float,by:Float,bz:Float,cx:Float,cy:Float,cz:Float) -> (x : Float,y : Float,z : Float){
-        let vecABx = ax - bx
-        let vecABy = ay - by
-        let vecABz = az - bz
-        let vecCBx = cx - bx
-        let vecCBy = cy - by
-        let vecCBz = cz - bz
-        
-        let normX = vecABy*vecCBz - vecABz*vecCBy
-        let normY = vecABz*vecCBx - vecABx*vecCBz
-        let normZ = vecABx*vecCBy - vecABy*vecCBx
-        return (normX,normY,normZ)
-    }
+    
         
     }
 
     
 @available(macOS 10.15, *)
 class Xaxis : OBJS_3D{
-        var axis = Tri(normX: 0, normY: 0, normZ: 0, posVec1X: 0, posVec1Y: 0, posVec1Z: 0, posVec2X: 1000, posVec2Y: 0, posVec2Z: 0, posVec3X: -1000, posVec3Y: 0, posVec3Z: 0,color: .red,thickness: 0.75)
+    var axis = Tri(posVec1: vector(x: 0, y: 0, z: 0), posVec2: vector(x: 1000, y: 0, z: 0), posVec3: vector(x: -1000, y: 0, z: 0))
     }
 @available(macOS 10.15, *)
 class Yaxis : OBJS_3D{
-        var axis = Tri(normX: 0, normY: 0, normZ: 0, posVec1X: 0, posVec1Y: 0, posVec1Z: 0, posVec2X: 0, posVec2Y: 1000, posVec2Z: 0, posVec3X: 0, posVec3Y: -1000, posVec3Z: 0,color: .yellow,thickness: 0.75)
+    var axis = Tri(posVec1: vector(x: 0, y: 0, z: 0), posVec2: vector(x: 0, y: 1000, z: 0), posVec3: vector(x: 0, y: -1000, z: 0))
     }
 @available(macOS 10.15, *)
 class Zaxis : OBJS_3D{
-        var axis = Tri(normX: 0, normY: 0, normZ: 0, posVec1X: 0, posVec1Y: 0, posVec1Z: 0, posVec2X: 0, posVec2Y: 0, posVec2Z: 1000, posVec3X: 0, posVec3Y: 0, posVec3Z: -1000,color: .blue,thickness: 0.75)
+    var axis = Tri(posVec1: vector(x: 0, y: 0, z: 0), posVec2: vector(x: 0, y: 0, z: 1000), posVec3: vector(x: 0, y: 0, z: -1000))
     }
     
 
@@ -506,7 +468,7 @@ public struct ICARUS {
                 if ((i) % 4 == 0){
                     tri[j].pointee.norm.point.x = Xres[i]
                     tri[j].pointee.norm.point.y = Yres[i]
-                    var a = Zres[i]
+                    let a = Zres[i]
                     if(a > 0){
                         tri[j].pointee.isVis = false
                     }else{
