@@ -14,6 +14,7 @@ public enum Projection{
 @available(macOS 10.15, *)
 public struct Tri{
         var norm : vector
+        var isVis : Bool = true
         var posVec1 : vector
         var posVec2 : vector
         var posVec3 : vector
@@ -98,19 +99,45 @@ public class Box : OBJS_3D{
             let hy = dy + self.height
             let hz = dz
             
-            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: ex, posVec2Y: ey, posVec2Z: ez, posVec3X: fx, posVec3Y: fy, posVec3Z: fz))
-            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: bx, posVec2Y: by, posVec2Z: bz, posVec3X: fx, posVec3Y: fy, posVec3Z: fz))
-//            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: bx, posVec1Y: by, posVec1Z: bz, posVec2X: fx, posVec2Y: fy, posVec2Z: fz, posVec3X: gx, posVec3Y: gy, posVec3Z: gz))
-//            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: bx, posVec1Y: by, posVec1Z: bz, posVec2X: cx, posVec2Y: cy, posVec2Z: cz, posVec3X: gx, posVec3Y: gy, posVec3Z: gz))
-            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: cx, posVec1Y: cy, posVec1Z: cz, posVec2X: gx, posVec2Y: gy, posVec2Z: gz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
-            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: cx, posVec1Y: cy, posVec1Z: cz, posVec2X: dx, posVec2Y: dy, posVec2Z: dz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
-//            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: dx, posVec1Y: dy, posVec1Z: dz, posVec2X: hx, posVec2Y: hy, posVec2Z: hz, posVec3X: ex, posVec3Y: ey, posVec3Z: ez))
-//            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: dx, posVec1Y: dy, posVec1Z: dz, posVec2X: ax, posVec2Y: ay, posVec2Z: az, posVec3X: ex, posVec3Y: ey, posVec3Z: ez))
-//            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: bx, posVec2Y: by, posVec2Z: bz, posVec3X: dx, posVec3Y: dy, posVec3Z: dz))
-//            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: bx, posVec1Y: by, posVec1Z: bz, posVec2X: cx, posVec2Y: cy, posVec2Z: cz, posVec3X: dx, posVec3Y: dy, posVec3Z: dz))
-//            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: ex, posVec1Y: ey, posVec1Z: ez, posVec2X: fx, posVec2Y: fy, posVec2Z: fz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
-//            self.Faces.append(Tri(normX: 0, normY: 0, normZ: 0, posVec1X: fx, posVec1Y: fy, posVec1Z: fz, posVec2X: gx, posVec2Y: gy, posVec2Z: gz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
+            let AEFnorm = crossProd(ax: ax, ay: ay, az: az, bx: ex, by: ey, bz: ez, cx: fx, cy: fy, cz: fz)
+            let ABFnorm = crossProd(ax: ax, ay: ay, az: az, bx: bx, by: by, bz: bz, cx: fx, cy: fy, cz: fz)
+            let BFGnorm = crossProd(ax: bx, ay: by, az: bz, bx: fx, by: fy, bz: fz, cx: gx, cy: gy, cz: gz)
+            let BCGnorm = crossProd(ax: bx, ay: by, az: bz, bx: cx, by: cy, bz: cz, cx: gx, cy: gy, cz: gz)
+            let CGHnorm = crossProd(ax: cx, ay: cy, az: cz, bx: gx, by: gy, bz: gz, cx: hx, cy: hy, cz: hz)
+            let CDHnorm = crossProd(ax: cx, ay: cy, az: cz, bx: dx, by: dy, bz: dz, cx: hx, cy: hy, cz: hz)
+            let DHEnorm = crossProd(ax: dx, ay: dy, az: dz, bx: hx, by: hy, bz: hz, cx: ex, cy: ey, cz: ez)
+            let DAEnorm = crossProd(ax: dx, ay: dy, az: dz, bx: ax, by: ay, bz: az, cx: ex, cy: ey, cz: ez)
+            let ABDnorm = crossProd(ax: ax, ay: ay, az: az, bx: bx, by: by, bz: bz, cx: dx, cy: dy, cz: dz)
+            let BCDnorm = crossProd(ax: bx, ay: by, az: bz, bx: cx, by: cy, bz: cz, cx: dx, cy: dy, cz: dz)
+            let EFHnorm = crossProd(ax: ex, ay: ey, az: ez, bx: fx, by: fy, bz: fz, cx: hx, cy: hy, cz: hz)
+            let FGHnorm = crossProd(ax: fx, ay: fy, az: fz, bx: gx, by: gy, bz: gz, cx: hx, cy: hy, cz: hz)
+            
+            self.Faces.append(Tri(normX: AEFnorm.x, normY: AEFnorm.y, normZ: AEFnorm.z, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: ex, posVec2Y: ey, posVec2Z: ez, posVec3X: fx, posVec3Y: fy, posVec3Z: fz))
+            self.Faces.append(Tri(normX: ABFnorm.x, normY: ABFnorm.y, normZ: ABFnorm.z, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: bx, posVec2Y: by, posVec2Z: bz, posVec3X: fx, posVec3Y: fy, posVec3Z: fz))
+            self.Faces.append(Tri(normX: BFGnorm.x, normY: BFGnorm.y, normZ: BFGnorm.z, posVec1X: bx, posVec1Y: by, posVec1Z: bz, posVec2X: fx, posVec2Y: fy, posVec2Z: fz, posVec3X: gx, posVec3Y: gy, posVec3Z: gz))
+            self.Faces.append(Tri(normX: BCGnorm.x, normY: BCGnorm.y, normZ: BCGnorm.z, posVec1X: bx, posVec1Y: by, posVec1Z: bz, posVec2X: cx, posVec2Y: cy, posVec2Z: cz, posVec3X: gx, posVec3Y: gy, posVec3Z: gz))
+            self.Faces.append(Tri(normX: CGHnorm.x, normY: CGHnorm.y, normZ: CGHnorm.z, posVec1X: cx, posVec1Y: cy, posVec1Z: cz, posVec2X: gx, posVec2Y: gy, posVec2Z: gz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
+            self.Faces.append(Tri(normX: CDHnorm.x, normY: CDHnorm.y, normZ: CDHnorm.z, posVec1X: cx, posVec1Y: cy, posVec1Z: cz, posVec2X: dx, posVec2Y: dy, posVec2Z: dz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
+            self.Faces.append(Tri(normX: DHEnorm.x, normY: DHEnorm.y, normZ: DHEnorm.z, posVec1X: dx, posVec1Y: dy, posVec1Z: dz, posVec2X: hx, posVec2Y: hy, posVec2Z: hz, posVec3X: ex, posVec3Y: ey, posVec3Z: ez))
+            self.Faces.append(Tri(normX: DAEnorm.x, normY: DAEnorm.y, normZ: DAEnorm.z, posVec1X: dx, posVec1Y: dy, posVec1Z: dz, posVec2X: ax, posVec2Y: ay, posVec2Z: az, posVec3X: ex, posVec3Y: ey, posVec3Z: ez))
+            self.Faces.append(Tri(normX: ABDnorm.x, normY: ABDnorm.y, normZ: ABDnorm.z, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: bx, posVec2Y: by, posVec2Z: bz, posVec3X: dx, posVec3Y: dy, posVec3Z: dz))
+            self.Faces.append(Tri(normX: BCDnorm.x, normY: BCDnorm.y, normZ: BCDnorm.z, posVec1X: bx, posVec1Y: by, posVec1Z: bz, posVec2X: cx, posVec2Y: cy, posVec2Z: cz, posVec3X: dx, posVec3Y: dy, posVec3Z: dz))
+            self.Faces.append(Tri(normX: EFHnorm.x, normY: EFHnorm.y, normZ: EFHnorm.z, posVec1X: ex, posVec1Y: ey, posVec1Z: ez, posVec2X: fx, posVec2Y: fy, posVec2Z: fz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
+            self.Faces.append(Tri(normX: FGHnorm.x, normY: FGHnorm.y, normZ: FGHnorm.z, posVec1X: fx, posVec1Y: fy, posVec1Z: fz, posVec2X: gx, posVec2Y: gy, posVec2Z: gz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
         }
+    func crossProd(ax:Float,ay:Float,az:Float,bx:Float,by:Float,bz:Float,cx:Float,cy:Float,cz:Float) -> (x : Float,y : Float,z : Float){
+        let vecABx = bx - ax
+        let vecABy = by - ay
+        let vecABz = bz - az
+        let vecCBx = bx - cx
+        let vecCBy = by - cy
+        let vecCBz = by - cz
+        
+        let normX = vecABy*vecCBz - vecABz*vecCBy
+        let normY = vecABz*vecCBx - vecABx*vecCBz
+        let normZ = vecABx*vecCBy - vecABy*vecCBx
+        return (normX,normY,normZ)
+    }
         
     }
 
@@ -157,12 +184,14 @@ public class OBJS_3D : Identifiable {
     public func Draw() -> Path{
         var path : Path = Path()
         for tri in Faces{
-            var temp = Path()
-            temp.move(to: CGPoint(x: Int(tri.posVec1.point.x), y: Int(tri.posVec1.point.y)))
-            temp.addLine(to: CGPoint(x: Int(tri.posVec2.point.x), y: Int(tri.posVec2.point.y)))
-            temp.addLine(to: CGPoint(x: Int(tri.posVec3.point.x), y: Int(tri.posVec3.point.y)))
-            temp.addLine(to: CGPoint(x: Int(tri.posVec1.point.x), y: Int(tri.posVec1.point.y)))
-            path.addPath(temp)
+            if(tri.isVis == true){
+                var temp = Path()
+                temp.move(to: CGPoint(x: Int(tri.posVec1.point.x), y: Int(tri.posVec1.point.y)))
+                temp.addLine(to: CGPoint(x: Int(tri.posVec2.point.x), y: Int(tri.posVec2.point.y)))
+                temp.addLine(to: CGPoint(x: Int(tri.posVec3.point.x), y: Int(tri.posVec3.point.y)))
+                temp.addLine(to: CGPoint(x: Int(tri.posVec1.point.x), y: Int(tri.posVec1.point.y)))
+                path.addPath(temp)
+            }
         }
         
         return path
@@ -216,14 +245,17 @@ public struct ICARUS {
             for j in 0 ..< self.objList[i].Faces.endIndex{
                 tris.append(&self.objList[i].Faces[j])
                 let tri = self.objList[i].Faces[j]
+                xPoints.append(tri.norm.x)
                 xPoints.append(tri.posVec1.x)
                 xPoints.append(tri.posVec2.x) // Append x,y,z position of obj face to corresponding list
                 xPoints.append(tri.posVec3.x)
                 
+                yPoints.append(tri.norm.y)
                 yPoints.append(tri.posVec1.y)
                 yPoints.append(tri.posVec2.y)
                 yPoints.append(tri.posVec3.y)
                 
+                zPoints.append(tri.norm.z)
                 zPoints.append(tri.posVec1.z)
                 zPoints.append(tri.posVec2.z)
                 zPoints.append(tri.posVec3.z)
@@ -232,7 +264,7 @@ public struct ICARUS {
         
         let device = MTLCreateSystemDefaultDevice()
         let projector = MetalProjector(device: device!)
-        projector.FillBuffers(arrX: xPoints, arrY: yPoints, arrZ: zPoints, scaX1: projectionMatrix[0,0], scaY1: projectionMatrix[0,1], scaZ1: projectionMatrix[0,2], scaX2: projectionMatrix[1,0], scaY2: projectionMatrix[1,1], scaZ2: projectionMatrix[1,2], Xtranslate: self.xTranslate, Ytranslate:  self.yTranslate, Ztranslate: self.zTranslate)
+        projector.FillBuffers(arrX: xPoints, arrY: yPoints, arrZ: zPoints, scaX1: projectionMatrix[0,0], scaY1: projectionMatrix[0,1], scaZ1: projectionMatrix[0,2], scaX2: projectionMatrix[1,0], scaY2: projectionMatrix[1,1], scaZ2: projectionMatrix[1,2],scaX3: projectionMatrix[2,0],scaY3: projectionMatrix[2,1],scaZ3: projectionMatrix[2,2], Xtranslate: self.xTranslate, Ytranslate:  self.yTranslate, Ztranslate: self.zTranslate)
         projector.SendComputeCommand()
         projector.ReturnXYList(tri: tris)
         
@@ -257,13 +289,12 @@ public struct ICARUS {
         ///   - yaw: rotation about the x axis
         ///   - scale: enlargement of the image
     func ortho(pitch:Float,roll:Float,yaw:Float,scale:Float) -> Matrix{
-        let matPlane = Matrix(rows: 2, columns: 3, type: .custMatrix, data: [1,0,0,0,1,0])
         let pitchMat = Matrix(rows: 3, columns: 3, type: .custMatrix, data: [cos(pitch),0,sin(pitch),0,1,0,-sin(pitch),0,cos(pitch)])
         let rollMat = Matrix(rows: 3, columns: 3, type: .custMatrix, data: [1,0,0,0,cos(roll),-sin(roll),0,sin(roll),cos(roll)])
         let yawMat = Matrix(rows: 3, columns: 3, type: .custMatrix, data: [cos(yaw),-sin(yaw),0,sin(yaw),cos(yaw),0,0,0,1])
         
-        let matPlaneAdj = Matrix.scalar_multiply(matA: Matrix.multiply(matA:Matrix.multiply(matA: Matrix.multiply(matA: matPlane, matB: pitchMat), matB: rollMat),matB:yawMat),scalar: scale)
-        return matPlaneAdj
+        let transform = Matrix.scalar_multiply(matA: Matrix.multiply(matA: rollMat,matB: Matrix.multiply(matA: pitchMat, matB: yawMat)),scalar: scale)
+        return transform
     }
         
         
@@ -299,12 +330,16 @@ public struct ICARUS {
         var scaX2 : Float = 0
         var scaY2 : Float = 0
         var scaZ2 : Float = 0
+        var scaX3 : Float = 0
+        var scaY3 : Float = 0
+        var scaZ3 : Float = 0
         
 
         
     //      vector output buffers
         var bufferXRes : MTLBuffer!
         var bufferYRes : MTLBuffer!
+        var bufferZRes : MTLBuffer!
         
         var arrayLength : Int = 0
         
@@ -322,7 +357,7 @@ public struct ICARUS {
             self.commandQueue = self.device.makeCommandQueue()
             
         }
-        func FillBuffers(arrX : [Float], arrY : [Float], arrZ : [Float], scaX1 : Float , scaY1 : Float , scaZ1 : Float,scaX2 : Float , scaY2 : Float , scaZ2 : Float,Xtranslate : Float,Ytranslate : Float, Ztranslate : Float){
+        func FillBuffers(arrX : [Float], arrY : [Float], arrZ : [Float], scaX1 : Float , scaY1 : Float , scaZ1 : Float,scaX2 : Float , scaY2 : Float , scaZ2 : Float,scaX3 : Float,scaY3 :Float, scaZ3 : Float,Xtranslate : Float,Ytranslate : Float, Ztranslate : Float){
             self.arrayLength = arrX.count
             let BufferSize = arrX.count * MemoryLayout<Float>.size
             
@@ -333,14 +368,19 @@ public struct ICARUS {
             self.bufferXres = self.device.makeBuffer(length: BufferSize, options: MTLResourceOptions.storageModeShared)
             self.bufferYres = self.device.makeBuffer(length: BufferSize, options: MTLResourceOptions.storageModeShared)
             self.bufferZres = self.device.makeBuffer(length: BufferSize, options: MTLResourceOptions.storageModeShared)
-                self.bufferXRes = self.device.makeBuffer(length: BufferSize, options: MTLResourceOptions.storageModeShared)
-                self.bufferYRes = self.device.makeBuffer(length: BufferSize, options: MTLResourceOptions.storageModeShared)
+            self.bufferXRes = self.device.makeBuffer(length: BufferSize, options: MTLResourceOptions.storageModeShared)
+            self.bufferYRes = self.device.makeBuffer(length: BufferSize, options: MTLResourceOptions.storageModeShared)
+            self.bufferZRes = self.device.makeBuffer(length: BufferSize, options: MTLResourceOptions.storageModeShared)
+            
             self.scaX1 = scaX1
             self.scaY1 = scaY1
             self.scaZ1 = scaZ1
             self.scaX2 = scaX2
             self.scaY2 = scaY2
             self.scaZ2 = scaZ2
+            self.scaX3 = scaX3
+            self.scaY3 = scaY3
+            self.scaZ3 = scaZ3
             
             self.Xtranslate = Xtranslate
             self.Ytranslate = Ytranslate
@@ -440,7 +480,10 @@ public struct ICARUS {
             self.encodeScalarCommands(computeEncoder: computeEncoder!,buffer: self.buffery,Sca: &self.scaY2,bufferRes: self.bufferYres)
             self.encodeScalarCommands(computeEncoder: computeEncoder!,buffer: self.bufferz,Sca: &self.scaZ2,bufferRes: self.bufferZres)
             self.encodeAddcommands(computeEncoder: computeEncoder!, bufferA: self.bufferXres, bufferB: self.bufferYres, bufferC: self.bufferZres, bufferRes: self.bufferYRes)
-            
+            self.encodeScalarCommands(computeEncoder: computeEncoder!,buffer: self.bufferx,Sca: &self.scaX3,bufferRes: self.bufferXres)
+            self.encodeScalarCommands(computeEncoder: computeEncoder!,buffer: self.buffery,Sca: &self.scaY3,bufferRes: self.bufferYres)
+            self.encodeScalarCommands(computeEncoder: computeEncoder!,buffer: self.bufferz,Sca: &self.scaZ3,bufferRes: self.bufferZres)
+            self.encodeAddcommands(computeEncoder: computeEncoder!, bufferA: self.bufferXres, bufferB: self.bufferYres, bufferC: self.bufferZres, bufferRes: self.bufferZRes)
             
             self.encodeAddscalarCommands(computeEncoder: computeEncoder!, bufferA: self.bufferXRes, Sca: &self.Xtranslate, bufferRes: self.bufferXRes)
             self.encodeAddscalarCommands(computeEncoder: computeEncoder!, bufferA: self.bufferYRes, Sca: &self.Ytranslate, bufferRes: self.bufferYRes)
@@ -455,21 +498,33 @@ public struct ICARUS {
         func ReturnXYList(tri : [UnsafeMutablePointer<Tri>]){
             let Xres = self.bufferXRes.contents().bindMemory(to: Float.self, capacity: self.bufferx.allocatedSize/MemoryLayout<Float>.size)
             let Yres = self.bufferYRes.contents().bindMemory(to: Float.self, capacity: self.bufferx.allocatedSize/MemoryLayout<Float>.size)
+            let Zres = self.bufferZRes.contents().bindMemory(to: Float.self, capacity: self.bufferx.allocatedSize/MemoryLayout<Float>.size)
+            
             var j = 0
             for i in 0..<self.arrayLength{
                 
-                if ((i) % 3 == 0){
+                if ((i) % 4 == 0){
+                    tri[j].pointee.norm.point.x = Xres[i]
+                    tri[j].pointee.norm.point.y = Yres[i]
+                    if(Zres[i] <= 0){
+                        tri[j].pointee.isVis = false
+                    }else{
+                        tri[j].pointee.isVis = true
+                    }
+                }
+                if ((i-1) % 4 == 0){
                     tri[j].pointee.posVec1.point.x = Xres[i]
                     tri[j].pointee.posVec1.point.y = Yres[i]
                 }
-                if ((i-1) % 3 == 0){
+                if ((i-2) % 4 == 0){
                     tri[j].pointee.posVec2.point.x = Xres[i]
                     tri[j].pointee.posVec2.point.y = Yres[i]
+                    
                 }
-                if ((i-2) % 3 == 0){
-                    tri[j].pointee.posVec3.point.x = Xres[i]
-                    tri[j].pointee.posVec3.point.y = Yres[i]
-                    j += 1
+                if ((i-3) % 4 == 0){
+                    tri[j].pointee.posVec2.point.x = Xres[i]
+                    tri[j].pointee.posVec2.point.y = Yres[i]
+                    j+=1
                 }
                 
             }
