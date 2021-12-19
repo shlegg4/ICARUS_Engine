@@ -107,9 +107,9 @@ public class Box : OBJS_3D{
             let CDHnorm = crossProd(ax: cx, ay: cy, az: cz, bx: dx, by: dy, bz: dz, cx: hx, cy: hy, cz: hz)
             let DHEnorm = crossProd(ax: dx, ay: dy, az: dz, bx: hx, by: hy, bz: hz, cx: ex, cy: ey, cz: ez)
             let DAEnorm = crossProd(ax: dx, ay: dy, az: dz, bx: ax, by: ay, bz: az, cx: ex, cy: ey, cz: ez)
-            let ABDnorm = crossProd(ax: ax, ay: ay, az: az, bx: bx, by: by, bz: bz, cx: dx, cy: dy, cz: dz)
+            let ABDnorm = crossProd(ax: bx, ay: by, az: bz, bx: ax, by: ay, bz: az, cx: dx, cy: dy, cz: dz)
             let BCDnorm = crossProd(ax: bx, ay: by, az: bz, bx: cx, by: cy, bz: cz, cx: dx, cy: dy, cz: dz)
-            let EFHnorm = crossProd(ax: ex, ay: ey, az: ez, bx: fx, by: fy, bz: fz, cx: hx, cy: hy, cz: hz)
+            let EFHnorm = crossProd(ax: fx, ay: fy, az: fz, bx: ex, by: ey, bz: ez, cx: hx, cy: hy, cz: hz)
             let FGHnorm = crossProd(ax: fx, ay: fy, az: fz, bx: gx, by: gy, bz: gz, cx: hx, cy: hy, cz: hz)
             
             self.Faces.append(Tri(normX: AEFnorm.x, normY: AEFnorm.y, normZ: AEFnorm.z, posVec1X: ax, posVec1Y: ay, posVec1Z: az, posVec2X: ex, posVec2Y: ey, posVec2Z: ez, posVec3X: fx, posVec3Y: fy, posVec3Z: fz))
