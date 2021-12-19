@@ -522,8 +522,8 @@ public struct ICARUS {
                     
                 }
                 if ((i-3) % 4 == 0){
-                    tri[j].pointee.posVec2.point.x = Xres[i]
-                    tri[j].pointee.posVec2.point.y = Yres[i]
+                    tri[j].pointee.posVec3.point.x = Xres[i]
+                    tri[j].pointee.posVec3.point.y = Yres[i]
                     j+=1
                 }
                 
