@@ -22,7 +22,7 @@ public struct Tri{
         var thickness : Float
     @available(macOS 10.15, *)
     
-    init(posVec1 : vector , posVec2 : vector, posVec3 : vector,color : Color = .white,thickness : Float = 0.25){
+    init(posVec1 : vector , posVec2 : vector, posVec3 : vector,flipNorm : Bool = false,color : Color = .white,thickness : Float = 0.25){
             
             self.posVec1 = posVec1
             self.posVec2 = posVec2
@@ -30,7 +30,15 @@ public struct Tri{
             self.norm = vector(x: 0, y: 0, z: 0)
             self.color = color
             self.thickness = thickness
-        self.norm = crossProd(vecA: self.posVec1, vecB: self.posVec2, vecC: self.posVec3)
+        if(flipNorm == false){
+            self.norm = crossProd(vecA: self.posVec1, vecB: self.posVec2, vecC: self.posVec3)
+        }else{
+            self.norm = crossProd(vecA: self.posVec1, vecB: self.posVec2, vecC: self.posVec3)
+            self.norm.x = -self.norm.x
+            self.norm.y = -self.norm.y
+            self.norm.z = -self.norm.z
+        }
+        
             
         }
     
@@ -87,17 +95,17 @@ public class Box : OBJS_3D{
             let H = vector(x: D.x, y: D.y + self.height, z: D.z)
             
             self.Faces.append(Tri(posVec1: A, posVec2: E, posVec3: F))
-            self.Faces.append(Tri(posVec1: A, posVec2: B, posVec3: F))
+            self.Faces.append(Tri(posVec1: A, posVec2: B, posVec3: F,flipNorm: true))
             self.Faces.append(Tri(posVec1: B, posVec2: F, posVec3: G))
-            self.Faces.append(Tri(posVec1: B, posVec2: C, posVec3: G))
+            self.Faces.append(Tri(posVec1: B, posVec2: C, posVec3: G,flipNorm: true))
             self.Faces.append(Tri(posVec1: C, posVec2: G, posVec3: H))
-            self.Faces.append(Tri(posVec1: C, posVec2: D, posVec3: H))
+            self.Faces.append(Tri(posVec1: C, posVec2: D, posVec3: H,flipNorm: true))
             self.Faces.append(Tri(posVec1: D, posVec2: H, posVec3: E))
-            self.Faces.append(Tri(posVec1: D, posVec2: A, posVec3: E))
+            self.Faces.append(Tri(posVec1: D, posVec2: A, posVec3: E,flipNorm: true))
             self.Faces.append(Tri(posVec1: B, posVec2: A, posVec3: D))
-            self.Faces.append(Tri(posVec1: B, posVec2: C, posVec3: D))
+            self.Faces.append(Tri(posVec1: B, posVec2: C, posVec3: D,flipNorm: true))
             self.Faces.append(Tri(posVec1: F, posVec2: E, posVec3: H))
-            self.Faces.append(Tri(posVec1: F, posVec2: G, posVec3: H))
+            self.Faces.append(Tri(posVec1: F, posVec2: G, posVec3: H,flipNorm: true))
         }
     
         
