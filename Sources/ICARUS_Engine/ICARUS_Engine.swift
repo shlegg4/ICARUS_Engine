@@ -94,18 +94,18 @@ public class Box : OBJS_3D{
             let G = vector(x: C.x, y: C.y + self.height, z: C.z)
             let H = vector(x: D.x, y: D.y + self.height, z: D.z)
             
-            self.Faces.append(Tri(posVec1: A, posVec2: E, posVec3: F))
-            self.Faces.append(Tri(posVec1: A, posVec2: B, posVec3: F,flipNorm: true))
+            self.Faces.append(Tri(posVec1: A, posVec2: E, posVec3: F,flipNorm: true))
+            self.Faces.append(Tri(posVec1: A, posVec2: B, posVec3: F,flipNorm: false))
             self.Faces.append(Tri(posVec1: B, posVec2: F, posVec3: G,flipNorm: true))
             self.Faces.append(Tri(posVec1: B, posVec2: C, posVec3: G,flipNorm: false))
-            self.Faces.append(Tri(posVec1: C, posVec2: G, posVec3: H))
-            self.Faces.append(Tri(posVec1: C, posVec2: D, posVec3: H,flipNorm: true))
+            self.Faces.append(Tri(posVec1: C, posVec2: G, posVec3: H,flipNorm: true))
+            self.Faces.append(Tri(posVec1: C, posVec2: D, posVec3: H,flipNorm: false))
             self.Faces.append(Tri(posVec1: D, posVec2: H, posVec3: E,flipNorm: true))
             self.Faces.append(Tri(posVec1: D, posVec2: A, posVec3: E,flipNorm: false))
-            self.Faces.append(Tri(posVec1: B, posVec2: A, posVec3: D,flipNorm: true))
-            self.Faces.append(Tri(posVec1: B, posVec2: C, posVec3: D,flipNorm: false))
-            self.Faces.append(Tri(posVec1: F, posVec2: E, posVec3: H))
-            self.Faces.append(Tri(posVec1: F, posVec2: G, posVec3: H,flipNorm: true))
+            self.Faces.append(Tri(posVec1: B, posVec2: A, posVec3: D,flipNorm: false))
+            self.Faces.append(Tri(posVec1: B, posVec2: C, posVec3: D,flipNorm: true))
+            self.Faces.append(Tri(posVec1: F, posVec2: E, posVec3: H,flipNorm: true))
+            self.Faces.append(Tri(posVec1: F, posVec2: G, posVec3: H,flipNorm: false))
         }
     
         
