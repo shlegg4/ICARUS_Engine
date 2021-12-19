@@ -102,10 +102,10 @@ public class Box : OBJS_3D{
             self.Faces.append(Tri(posVec1: C, posVec2: D, posVec3: H,flipNorm: true))
             self.Faces.append(Tri(posVec1: D, posVec2: H, posVec3: E,flipNorm: true))
             self.Faces.append(Tri(posVec1: D, posVec2: A, posVec3: E,flipNorm: false))
-//            self.Faces.append(Tri(posVec1: B, posVec2: A, posVec3: D))
-//            self.Faces.append(Tri(posVec1: B, posVec2: C, posVec3: D,flipNorm: true))
-//            self.Faces.append(Tri(posVec1: F, posVec2: E, posVec3: H))
-//            self.Faces.append(Tri(posVec1: F, posVec2: G, posVec3: H,flipNorm: true))
+            self.Faces.append(Tri(posVec1: B, posVec2: A, posVec3: D))
+            self.Faces.append(Tri(posVec1: B, posVec2: C, posVec3: D,flipNorm: true))
+            self.Faces.append(Tri(posVec1: F, posVec2: E, posVec3: H))
+            self.Faces.append(Tri(posVec1: F, posVec2: G, posVec3: H,flipNorm: true))
         }
     
         
