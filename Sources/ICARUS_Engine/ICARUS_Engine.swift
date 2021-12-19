@@ -126,12 +126,12 @@ public class Box : OBJS_3D{
             self.Faces.append(Tri(normX: FGHnorm.x, normY: FGHnorm.y, normZ: FGHnorm.z, posVec1X: fx, posVec1Y: fy, posVec1Z: fz, posVec2X: gx, posVec2Y: gy, posVec2Z: gz, posVec3X: hx, posVec3Y: hy, posVec3Z: hz))
         }
     func crossProd(ax:Float,ay:Float,az:Float,bx:Float,by:Float,bz:Float,cx:Float,cy:Float,cz:Float) -> (x : Float,y : Float,z : Float){
-        let vecABx = bx - ax
-        let vecABy = by - ay
-        let vecABz = bz - az
-        let vecCBx = bx - cx
-        let vecCBy = by - cy
-        let vecCBz = bz - cz
+        let vecABx = ax - bx
+        let vecABy = ay - by
+        let vecABz = az - bz
+        let vecCBx = cx - bx
+        let vecCBy = cy - by
+        let vecCBz = cz - bz
         
         let normX = vecABy*vecCBz - vecABz*vecCBy
         let normY = vecABz*vecCBx - vecABx*vecCBz
