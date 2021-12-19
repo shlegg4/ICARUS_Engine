@@ -165,7 +165,7 @@ public class OBJS_3D : Identifiable {
             }
         }
         
-        return path.stroke(.black, lineWidth: 0.25) as! Path
+        return path
     }
     
 //    Possible functions Append to this list : Colour Faces,
