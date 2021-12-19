@@ -506,7 +506,8 @@ public struct ICARUS {
                 if ((i) % 4 == 0){
                     tri[j].pointee.norm.point.x = Xres[i]
                     tri[j].pointee.norm.point.y = Yres[i]
-                    if(Zres[i] <= 0){
+                    var a = Zres[i]
+                    if(a <= 0){
                         tri[j].pointee.isVis = false
                     }else{
                         tri[j].pointee.isVis = true
