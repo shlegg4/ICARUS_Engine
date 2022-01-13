@@ -202,6 +202,16 @@ public struct ICARUS {
     public init (projection : Projection){
         self.projection = projection
     }
+    public func Render() -> Path{
+        var path : Path = Path()
+        for obj in objList{
+            path.addPath(obj.Draw())
+        }
+        
+        return path
+    }
+    
+    
     
 //    Call this function in order to update the view
     public func Update(){
