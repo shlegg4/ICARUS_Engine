@@ -202,13 +202,21 @@ public struct ICARUS {
     public init (projection : Projection){
         self.projection = projection
     }
-    public func Render() -> Path{
-        var path : Path = Path()
-        for obj in objList{
-            path.addPath(obj.Draw())
-        }
-        
-        return path
+     public func Render() -> some View{
+         var body : some View{
+             ZStack{
+                 ForEach(objList,id : \.id){obj in
+                     ZStack{
+                         obj.Draw()
+                             .fill(.white)
+                         obj.Draw()
+                             .stroke(.black)
+                     }
+                     
+                 }
+             }
+         }
+         return body
     }
     
     
